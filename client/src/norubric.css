@@ -1,0 +1,14 @@
+.no-rubric-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .upload-section {
+    margin: 20px 0;
+  }
+  
+  progress {
+    width: 100%;
+    margin-top: 10px;
+  }
+  
