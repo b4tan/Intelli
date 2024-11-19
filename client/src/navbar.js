@@ -19,7 +19,6 @@ function Navbar() {
         backgroundColor: '#25897a',
       }}
     >
-      {/* App Name */}
       <h1
         className="text-3xl font-bold cursor-pointer flex-shrink-0"
         style={{ color: '#FAF9F6', fontFamily: 'Optima', marginLeft: '10px' }}
@@ -28,7 +27,6 @@ function Navbar() {
         Intelli.
       </h1>
 
-      {/* Center Navigation Buttons - Hidden on Small Screens */}
       <div className="hidden md:flex items-center gap-8 flex-grow justify-center">
         <button
           onClick={() => scrollToSection('autograder')}
@@ -60,7 +58,6 @@ function Navbar() {
         </button>
       </div>
 
-      {/* Login/Sign Up Button - Always Visible */}
       <button
         onClick={() => scrollToSection('login')}
         className="flex items-center gap-2 px-3 py-2 rounded-lg border text-[#FAF9F6] hover:bg-[#6BB1A6] hover:text-[#FAF9F6] transition font-medium text-sm"

@@ -38,15 +38,18 @@ function NoRubric() {
   }
 
   return (
+    
     <div className="no-rubric-container">
+        <div className="absolute inset-0 h-[2500px] bg-gradient-to-r from-transparent via-[#3070b0]/30 to-transparent z-5 pointer-events-none"></div>
+
       <h2>Upload Files</h2>
 
-      <div className="upload-section">
+      <div className="upload-section z-10">
         <p>Student Submission/Answer</p>
         <input type="file" onChange={(e) => setFile(e.target.files[0])} />
       </div>
 
-      <div className="upload-section">
+      <div className="upload-section z-10">
         <p>Grading Scheme</p>
         <input type="file" onChange={(e) => setFile(e.target.files[0])} />
       </div>
