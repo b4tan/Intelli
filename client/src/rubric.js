@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -8,6 +8,10 @@ function Rubric() {
   const [msg, setMsg] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [generatedFileUrl, setGeneratedFileUrl] = useState(null);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   function handleUpload() {
     if (!file && !generatedFileUrl) {
@@ -89,7 +93,9 @@ function Rubric() {
   };
 
   return (
-    <div className="rubric-container">
+    <div className="rubric-container text-[#FAF9F6] pt-[70px]">
+      <div className="absolute inset-0 h-[2500px] bg-gradient-to-r from-transparent via-[#3070b0]/30 to-transparent z-5 pointer-events-none"></div>
+
       <h1>Welcome to our free response autograder</h1>
       <h2>Please upload the submission below</h2>
 

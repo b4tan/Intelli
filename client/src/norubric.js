@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -6,6 +6,10 @@ function NoRubric() {
   const [file, setFile] = useState(null);
   const [progress, setProgress] = useState({ started: false, pc: 0 });
   const [msg, setMsg] = useState(null);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   // Function to handle file upload
   function handleUpload() {
@@ -39,7 +43,7 @@ function NoRubric() {
 
   return (
     
-    <div className="no-rubric-container">
+    <div className="no-rubric-container text-[#FAF9F6] pt-[70px]">
         <div className="absolute inset-0 h-[2500px] bg-gradient-to-r from-transparent via-[#3070b0]/30 to-transparent z-5 pointer-events-none"></div>
 
       <h2>Upload Files</h2>

@@ -7,14 +7,16 @@ function Navbar() {
 
   const scrollToSection = (sectionId) => {
     const section = document.getElementById(sectionId);
+    const navbarHeight = 70;
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+      const offsetTop = section.getBoundingClientRect().top + window.scrollY - navbarHeight;
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
     }
   };
 
   return (
     <nav
-      className="flex items-center justify-between p-3 w-full overflow-x-hidden"
+      className="flex items-center justify-between p-3 w-full fixed overflow-x-hidden z-50 top-0"
       style={{
         backgroundColor: '#25897a',
       }}
@@ -75,3 +77,5 @@ function Navbar() {
 }
 
 export default Navbar;
+
+{/* navbar links should redirect to home page and scroll to that area when clicked from norubric and rubric */}
