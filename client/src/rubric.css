@@ -1,9 +1,18 @@
 .rubric-container {
-    max-width: 800px;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    text-align: center;
-  }
+  max-width: 800px;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0 auto; /* Center the container */
+  background-color: #1c1c1c; /* Dark background for contrast */
+  color: #ffffff; /* Ensure text is visible on dark background */
+  border-radius: 8px; /* Add slight rounding */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+  padding-top: 80px; /* Extra padding for internal spacing */
+  margin-top: 80px; /* Pushes the container below the fixed header */
+}
+
+
   
   .questions-container {
     margin-top: 20px;
@@ -92,4 +101,14 @@
   a:hover {
     text-decoration: underline;
   }
+  header {
+    height: 60px; /* Example height */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000; /* Ensure it stays above other elements */
+}
+
+.text-3xl {
   
+}
