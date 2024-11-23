@@ -43,6 +43,7 @@ const Autograder = () => {
             marginLeft: '30px',
             marginTop: '-10px',
             fontWeight: 'lighter',
+            opacity: "0.8",
           }}
         >
           To achieve high accuracy in grading submissions, our model would need a grading guideline
@@ -60,6 +61,7 @@ const Autograder = () => {
           className="flex items-center gap-2 px-6 py-3 rounded-lg border-2 text-[#FAF9F6] hover:bg-[#6BB1A6] hover:text-[#FAF9F6] transition font-medium text-md"
           style={{
             borderColor: '#FAF9F6',
+            opacity: '0.8',
             fontFamily: 'Optima',
             fontWeight: 'bold',
           }}
@@ -72,6 +74,7 @@ const Autograder = () => {
           className="flex items-center gap-2 px-8 py-4 rounded-lg border-2 text-[#FAF9F6] hover:bg-[#6BB1A6] hover:text-[#FAF9F6] transition font-medium text-md"
           style={{
             borderColor: '#FAF9F6',
+            opacity: '0.8',
             fontFamily: 'Optima',
             fontWeight: 'bold',
           }}

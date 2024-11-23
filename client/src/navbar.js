@@ -1,16 +1,26 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function Navbar() {
-  // Scroll to the specified section
   const navigate = useNavigate();
+  const location = useLocation();
 
   const scrollToSection = (sectionId) => {
-    const section = document.getElementById(sectionId);
-    const navbarHeight = 70;
-    if (section) {
-      const offsetTop = section.getBoundingClientRect().top + window.scrollY - navbarHeight;
-      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+    const goToSection = () => {
+      const section = document.getElementById(sectionId);
+      const navbarHeight = 70;
+      if (section) {
+        const offsetTop = section.getBoundingClientRect().top + window.scrollY - navbarHeight;
+        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+      }
+    };
+
+    if (location.pathname !== '/') {
+      // Redirect to home and scroll to the section after navigation
+      navigate('/');
+      setTimeout(goToSection, 100); // Small delay to ensure navigation is complete
+    } else {
+      goToSection();
     }
   };
 
@@ -77,5 +87,3 @@ function Navbar() {
 }
 
 export default Navbar;
-
-{/* navbar links should redirect to home page and scroll to that area when clicked from norubric and rubric */}

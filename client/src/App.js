@@ -7,6 +7,10 @@ import Hero from './Hero';
 import Home from './Home';
 import Autograder from './Autograder'
 import Hiw from './hiw'
+import Subscribe from './subscribe'
+import Contact from './contact'
+import Footer from './footer'; 
+
 
 function HomePage() {
 
@@ -28,14 +32,16 @@ function HomePage() {
 
 
       <div id="subscribe">
-        <h2>Subscribe Section</h2>
-        <p>Subscription details here.</p>
+      <Subscribe />
       </div>
 
-      <div id="contact">
-        <h2>Contact Section</h2>
-        <p>Contact information and form.</p>
+      <div id="contact" style ={{
+        marginBottom: "70px"
+      }}>
+        <Contact />
       </div>
+
+      <Footer />
     </div>
   );
 }
