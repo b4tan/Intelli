@@ -1,114 +1,192 @@
+/* Apply gradient background to the entire page */
+body {
+  margin: 0;
+  font-family: Geneva, sans-serif;
+  color: #FAF9F6;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(48, 112, 176, 0.3),
+    transparent
+  ),
+  #121312; /* Fallback dark gray */
+  min-height: 100vh;
+}
+
+html {
+  height: 100%; /* Ensure full height */
+}
+
+/* Main container for Rubric */
 .rubric-container {
   max-width: 800px;
   padding: 20px;
-  font-family: Arial, sans-serif;
   text-align: center;
   margin: 0 auto; /* Center the container */
-  background-color: #1c1c1c; /* Dark background for contrast */
-  color: #ffffff; /* Ensure text is visible on dark background */
-  border-radius: 8px; /* Add slight rounding */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
-  padding-top: 80px; /* Extra padding for internal spacing */
-  margin-top: 80px; /* Pushes the container below the fixed header */
+  background-color: rgba(255, 255, 255, 0.05); /* Slight transparency for the container */
+  color: #FAF9F6; /* Light text color */
+  border-radius: 8px; /* Slight rounding for the box */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  padding-top: 40px;
+  padding-bottom: 40px;
+  margin-top: 120px; /* Push below fixed header */
 }
 
+/* Questions container */
+.questions-container {
+  margin-top: 20px;
+}
 
-  
-  .questions-container {
-    margin-top: 20px;
-  }
-  
-  .question-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 15px;
-  }
-  
-  .question-row label {
-    font-weight: bold;
-    min-width: 130px;
-    text-align: right;
-  }
-  
-  .question-row select,
-  .question-row input[type="text"],
-  .question-row input[type="number"] {
-    padding: 5px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    flex: 1;
-  }
-  
-  .question-row button {
-    padding: 5px 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #f44336;
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-  }
-  
-  button + button {
-    background-color: #4CAF50;
-    margin-left: 10px;
-  }
-  
-  .upload-section {
-    margin-top: 20px;
-  }
-  
-  progress {
-    width: 100%;
-    margin-top: 15px;
-    height: 20px;
-  }
-  
-  span {
-    display: block;
-    margin-top: 10px;
-    color: #333;
-    font-size: 14px;
-  }
-  
-  a {
-    display: inline-block;
-    margin-top: 10px;
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  a:hover {
-    text-decoration: underline;
-  }
-  header {
-    height: 60px; /* Example height */
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000; /* Ensure it stays above other elements */
+/* Styling for individual question rows */
+.question-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  background-color: rgba(255, 255, 255, 0.05); /* Transparent question background */
+  border: 1px solid #FAF9F6; /* Light border */
+  padding: 10px;
+  border-radius: 8px; /* Rounded corners */
+  margin-bottom: 15px;
+}
+
+/* Label styles */
+.question-row label {
+  font-weight: 600; /* Semibold for labels */
+  min-width: 130px;
+  text-align: right;
+  color: #FAF9F6; /* Label color */
+  font-family: Geneva, sans-serif;
+}
+
+/* Inputs and select elements */
+.question-row select,
+.question-row input[type="text"],
+.question-row input[type="number"] {
+  padding: 10px;
+  border-radius: 8px; /* Rounded input */
+  border: 1px solid #FAF9F6; /* Light border */
+  font-size: 14px;
+  background-color: transparent; /* Transparent background */
+  color: #FAF9F6; /* Text color */
+  font-family: Geneva, sans-serif;
+  font-weight: lighter;
+  width: 100%;
+}
+
+/* Button styling */
+button {
+  padding: 10px 20px;
+  background-color: transparent; /* Transparent background */
+  color: #FAF9F6;
+  border: 1px solid #FAF9F6; /* Light border */
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer;
+  font-size: 16px;
+  font-family: Geneva, sans-serif;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: #6BB1A6; /* Hover effect */
+  color: #FAF9F6;
+}
+
+/* Remove question button */
+.question-row button {
+  padding: 10px 15px;
+  border: 1px solid #FAF9F6;
+  border-radius: 8px;
+  background-color: transparent;
+  color: #FAF9F6;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+.question-row button:hover {
+  background-color: #f44336; /* Red background on hover */
+  color: #FAF9F6;
+}
+
+/* Upload section */
+.upload-section {
+  margin-top: 20px;
+}
+
+/* File input */
+.upload-section input[type="file"] {
+  padding: 10px;
+  border-radius: 8px; /* Rounded corners */
+  border: 1px solid #FAF9F6;
+  background-color: transparent; /* Transparent input */
+  color: #FAF9F6; /* Text color */
+  font-family: Geneva, sans-serif;
+  font-weight: lighter;
+  width: 100%;
+}
+
+/* Status message */
+.msg {
+  color: #FAF9F6;
+  font-family: Geneva, sans-serif;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+/* Table for grading data */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th,
+td {
+  border: 1px solid #FAF9F6;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: rgba(48, 112, 176, 0.3); /* Subtle gradient header */
+  color: #FAF9F6;
+  font-weight: bold;
+}
+
+td {
+  background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent */
+  color: #FAF9F6;
+}
+
+tr:hover td {
+  background-color: rgba(255, 255, 255, 0.2); /* Highlight on hover */
+}
+
+/* Links */
+a {
+  color: #FAF9F6;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Header */
+header {
+  height: 60px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #121312; /* Consistent dark background */
 }
 
 .text-3xl {
-  
+  font-family: Geneva, sans-serif;
+  font-weight: bold;
+  color: #FAF9F6;
 }

@@ -5,17 +5,16 @@ function Footer() {
     <footer
       className="w-full text-[#FAF9F6] py-6 text-center"
       style={{
-        backgroundColor: '#121312', 
+        backgroundColor: '#25897a', 
         fontFamily: 'Optima',
-        opactiy: "0.8"
+        opacity: 0.8, 
       }}
     >
       <p
         style={{
-          color: '#FAF9F6', 
-          fontSize: '1rem', 
+          color: '#FAF9F6',
+          fontSize: '1rem',
           marginBottom: '8px',
-          opacity: "0.8"
         }}
       >
         &copy; {new Date().getFullYear()} Intelli. All Rights Reserved.
@@ -24,7 +23,6 @@ function Footer() {
         style={{
           color: '#FAF9F6',
           fontSize: '1rem',
-          opacity: "0.8"
         }}
       >
         Made with ❤️ by the Intelli Team.

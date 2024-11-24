@@ -63,6 +63,8 @@ function NoRubric() {
 
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10 px-5">
+            <div className="absolute inset-0 h-[1985px] bg-gradient-to-r from-transparent via-[#3070b0]/30 to-transparent z-0 pointer-events-none"></div>
+
             <div className="bg-white shadow-md rounded-lg p-8 max-w-2xl w-full">
                 <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
                     Grade Submission

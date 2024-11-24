@@ -128,6 +128,8 @@ function Rubric() {
 
   return (
     <div className="rubric-container text-gray-800 min-h-screen flex flex-col items-center py-10 px-5 mt-20">
+    {/* <div className="absolute inset-0 h-full bg-gradient-to-r from-transparent via-[#3070b0]/30 to-transparent z-0 pointer-events-none"></div> */}
+
   <h1 className="text-3xl font-bold mb-6 text-center text-white">
     Create and Submit Rubric
   </h1>

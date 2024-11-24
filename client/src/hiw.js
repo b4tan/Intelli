@@ -8,6 +8,7 @@ const hiw = () => {
                 fontFamily: 'Geneva',
             }}
         >
+
             {/* Title Section */}
             <div
                 className="relative mb-8"
@@ -16,7 +17,7 @@ const hiw = () => {
                 }}
             >
                 <div
-                    className="absolute top-0 left-0 h-20 bg-red-600/65"
+                    className="absolute top-0 left-0 h-20 bg-[#1d997c]/80"
                     style={{
                         width: '50%',
                         clipPath: 'polygon(0 0, 100% 0, 85% 50%, 100% 100%, 0 100%)',
