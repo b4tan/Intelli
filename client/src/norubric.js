@@ -62,10 +62,10 @@ function NoRubric() {
 
 
     return (
-        <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10 px-5">
-            <div className="absolute inset-0 h-[1985px] bg-gradient-to-r from-transparent via-[#3070b0]/30 to-transparent z-0 pointer-events-none"></div>
+        <div className="min-h-screen flex flex-col items-center py-10 px-5">
+            <div className="fixed inset-0 w-full h-full bg-gradient-to-r from-transparent via-[#3070b0]/30 to-transparent z-0 pointer-events-none"></div>
 
-            <div className="bg-white shadow-md rounded-lg p-8 max-w-2xl w-full">
+            <div className="mt-16 bg-[#FAF9F6] shadow-md rounded-lg p-8 max-w-2xl w-full">
                 <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
                     Grade Submission
                 </h1>
@@ -105,10 +105,17 @@ function NoRubric() {
                 </div>
 
                 {/* Submit Button */}
-                <div className="mt-8">
+                <div className="mt-8 flex justify-center">
                     <button
                         onClick={handleSubmit}
-                        className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition"
+                        className="gap-4 px-[35%] py-3 rounded-lg border bg-[#25897a] text-[#FAF9F6] hover:bg-[#6BB1A6] hover:text-[#FAF9F6] transition font-medium text-sm z-10"
+                        style={{
+                          borderColor: '#FAF9F6',
+                          fontFamily: 'Optima',
+                          fontWeight: 'bold',
+                          marginRight: '10px',
+                          opacity: 0.9,
+                        }}
                     >
                         Submit for Grading
                     </button>

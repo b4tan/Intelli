@@ -10,8 +10,7 @@ export const Hero = () => {
             }}
         >
             <div className="absolute h-80 w-80 bg-[#20B2AA] rounded-full border border-white/30 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(50%_50%_at_16.8%_18.3%,white,rgb(105,250,206,0.37),rgb(1,148,118))] shadow-[-20px_-20px_50px_rgba(255,255,255,0.5),-20px_-20px_80px_rgba(255,255,255,0.1),0_0_50px_rgba(9,250,217,1)] z-10"></div>
-            <div className="absolute inset-0 h-[1985px] bg-gradient-to-r from-transparent via-[#3070b0]/30 to-transparent z-0 pointer-events-none"></div>
-            {/* original value 550px height */}
+            <div className="fixed inset-0 w-full h-full bg-gradient-to-r from-transparent via-[#3070b0]/30 to-transparent z-0 pointer-events-none"></div>
 
             <div className="container relative z-10 text-center">
                 <h1
