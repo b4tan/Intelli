@@ -5,7 +5,7 @@ textarea,
 select { 
   background-color: transparent; 
   border: 1px solid grey-800; 
-  color: #FAF9F6; 
+  color: grey-800; 
   font-family: Geneva, sans-serif; 
   font-weight: lighter; 
   padding: 10px; 
