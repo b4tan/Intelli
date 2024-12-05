@@ -9,6 +9,7 @@ function Rubric() {
   const [generatedFile, setGeneratedFile] = useState(null); // Generated rubric file
   const [msg, setMsg] = useState(null);
   const [gradingData, setGradingData] = useState(null);
+  const [downloadGeneratedFile, setDownloadGeneratedFile] = useState(null);
 
   // Scroll to top on load
   useEffect(() => {
@@ -19,9 +20,10 @@ function Rubric() {
   const addQuestion = () => {
     setQuestions([
       ...questions,
-      { type: '', question: '', rubric: '', sampleAnswer: '', points: '' },
+      { type: 'mcq', question: '', rubric: '', sampleAnswer: '', points: '' },
     ]);
   };
+  
 
   // Remove a question
   const removeQuestion = (index) => {
@@ -34,7 +36,7 @@ function Rubric() {
       i === index ? { ...q, [field]: value } : q
     );
     setQuestions(updatedQuestions);
-  };
+  };  
 
   // Handle student file upload
   const handleFileChange = (e) => {
@@ -71,12 +73,15 @@ function Rubric() {
     });
 
     const blob = await Packer.toBlob(doc);
+    const fileURL = URL.createObjectURL(blob);
     const file = new File([blob], 'rubric.docx', {
       type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     });
 
     setGeneratedFile(file); // Save generated file
+    setDownloadGeneratedFile(fileURL);
     setMsg('Rubric file generated successfully! Now Grading.....');
+    // setMsg(generatedFile);
   };
 
   const saveAsDocx = async (response) => {
@@ -230,6 +235,18 @@ function Rubric() {
           </p>
         )}
       </div>
+      {/* Display Full GPT Response */}
+{gradingData?.gptResponse && (
+  <div className="mt-6 w-[60%]">
+    <h3 className="font-semibold text-[#FAF9F6] text-center mb-2">
+      Full GPT Response
+    </h3>
+    <pre className="bg-gray-100 p-4 rounded-md overflow-x-auto text-sm">
+      {gradingData.gptResponse}
+    </pre>
+  </div>
+)}
+
 
       {/* Download Full Response */}
       {gradingData?.gptResponse && (
@@ -240,7 +257,21 @@ function Rubric() {
           Download Full Response
         </button>
       )}
+      {/* Download Rubric */}
+      {gradingData?.gptResponse && (
+
+    <a
+      href={downloadGeneratedFile}
+      download="rubric.docx"
+      className="mt-4 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition"
+    >
+      Download Rubric
+    </a>
+
+)}
+
     </div>
+
   );
 }
 
