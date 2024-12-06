@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Document, Packer, Paragraph, TextRun } from 'docx';
 
@@ -6,21 +6,32 @@ function NoRubric() {
     const [submissionFile, setSubmissionFile] = useState(null);
     const [rubricFile, setRubricFile] = useState(null);
     const [gradingData, setGradingData] = useState(null);
+    const [editedData, setEditedData] = useState(null);
     const [msg, setMsg] = useState(null);
 
-
-    // Handle file upload
     const handleFileChange = (e, setFile) => {
         setFile(e.target.files[0]);
     };
-    const saveAsDocx = async (response) => {
+
+    const handleEditChange = (index, field, value) => {
+        const updatedData = [...editedData.csvData];
+        updatedData[index][field] = field === 'grade' ? parseFloat(value) || 0 : value;
+        const updatedOverallGrade = updatedData.reduce((sum, item) => sum + (parseFloat(item.grade) || 0), 0);
+        setEditedData({ ...editedData, csvData: updatedData, overallGrade: updatedOverallGrade });
+    };
+
+    const saveAsDocx = async (data) => {
+        const tableData = data.csvData.map(row => {
+            return `Question: ${row.question}, Grade: ${row.grade}, Reason: ${row.reason}`;
+        }).join('\n\n');
+
         const doc = new Document({
             sections: [
                 {
                     children: [
                         new Paragraph({
                             children: [
-                                new TextRun(response),
+                                new TextRun(tableData),
                             ],
                         }),
                     ],
@@ -32,8 +43,8 @@ function NoRubric() {
         link.href = URL.createObjectURL(blob);
         link.download = 'GPT_Response.docx';
         link.click();
-    }
-    // Handle form submission
+    };
+
     const handleSubmit = async () => {
         if (!rubricFile || !submissionFile) {
             setMsg('Please upload both files.');
@@ -52,14 +63,15 @@ function NoRubric() {
                 },
             });
 
-            setGradingData(response.data); // Store API response
+            const initialOverallGrade = response.data.csvData.reduce((sum, item) => sum + parseFloat(item.grade || 0), 0);
+            setGradingData({ ...response.data, overallGrade: initialOverallGrade });
+            setEditedData({ ...response.data, overallGrade: initialOverallGrade });
             setMsg('Grading complete!');
         } catch (error) {
             console.error('Error submitting files:', error);
             setMsg('Error during submission. Please try again.');
         }
     };
-
 
     return (
         <div className="min-h-screen flex flex-col items-center py-10 px-5">
@@ -70,7 +82,6 @@ function NoRubric() {
                     Grade Submission
                 </h1>
 
-                {/* File Upload Inputs */}
                 <div className="space-y-6">
                     <div>
                         <label
@@ -104,43 +115,30 @@ function NoRubric() {
                     </div>
                 </div>
 
-                {/* Submit Button */}
                 <div className="mt-8 flex justify-center">
                     <button
                         onClick={handleSubmit}
-                        className="gap-4 px-[35%] py-3 rounded-lg border bg-[#25897a] text-[#FAF9F6] hover:bg-[#6BB1A6] hover:text-[#FAF9F6] transition font-medium text-sm z-10"
+                        className="px-[35%] py-3 rounded-lg bg-[#25897a] text-[#FAF9F6] hover:bg-[#6BB1A6] hover:text-[#FAF9F6] transition font-medium text-sm z-10"
                         style={{
-                          borderColor: '#FAF9F6',
-                          fontFamily: 'Optima',
-                          fontWeight: 'bold',
-                          marginRight: '10px',
-                          opacity: 0.9,
+                            marginRight: '10px',
+                            opacity: 0.8,
                         }}
                     >
                         Submit for Grading
                     </button>
                 </div>
 
-                {/* Status Message */}
                 {msg && (
                     <p className="mt-4 text-center text-gray-700 font-medium">
                         {msg}
                     </p>
                 )}
             </div>
-            {gradingData?.gptResponse && (
-    <button
-        onClick={() => saveAsDocx(gradingData.gptResponse)}
-        className="mt-4 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition"
-    >
-        Download Full Response
-    </button>
-)}
-            {/* Grading Data Display */}
-            {gradingData && (
+
+            {editedData && (
                 <div className="bg-white shadow-md rounded-lg p-8 mt-10 w-full max-w-4xl">
-                    <h2 className="text-xl font-bold text-gray-800 mb-4">
-                        Overall Grade: {gradingData.overallGrade}
+                    <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
+                        Overall Grade: {editedData.overallGrade}
                     </h2>
                     <table className="w-full text-left border-collapse border border-gray-300">
                         <thead>
@@ -151,30 +149,56 @@ function NoRubric() {
                             </tr>
                         </thead>
                         <tbody>
-                            {gradingData.csvData.map((row, index) => (
-                                <tr key={index} className="hover:bg-gray-50">
-                                    <td className="border border-gray-300 px-4 py-2">
-                                        {row.question}
-                                    </td>
-                                    <td className="border border-gray-300 px-4 py-2">
-                                        {row.grade}
-                                    </td>
-                                    <td className="border border-gray-300 px-4 py-2">
-                                        {row.reason}
-                                    </td>
-                                </tr>
-                            ))}
+                            {editedData.csvData.map((row, index) => {
+                                // Ensure the grade is always treated as a string
+                                const grade = typeof row.grade === "string" ? row.grade : `${row.grade}/5`; // Default to 5 as denominator
+                                const [numerator, denominator] = grade.split("/");
+
+                                return (
+                                    <tr key={index} className="hover:bg-gray-50">
+                                        <td className="border border-gray-300 px-4 py-2">
+                                            {row.question}
+                                        </td>
+                                        <td className="border border-gray-300 px-4 py-2">
+                                            <div className="flex items-center">
+                                                <input
+                                                    type="number"
+                                                    value={numerator} // Editable numerator
+                                                    onChange={(e) =>
+                                                        handleEditChange(
+                                                            index,
+                                                            "grade",
+                                                            `${e.target.value}/${denominator}`
+                                                        )
+                                                    }
+                                                    className="w-16 border border-gray-300 rounded-md p-1 mr-1"
+                                                />
+                                                <span>/ {denominator}</span> {/* Static denominator */}
+                                            </div>
+                                        </td>
+                                        <td className="border border-gray-300 px-4 py-2">
+                                            <textarea
+                                                value={row.reason}
+                                                onChange={(e) =>
+                                                    handleEditChange(index, "reason", e.target.value)
+                                                }
+                                                className="w-full border border-gray-300 rounded-md p-2"
+                                                rows={Math.max(2, Math.ceil(row.reason.length / 60))} // Dynamic row size
+                                                style={{ resize: "none" }} // Prevent manual resizing
+                                            />
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
-
-                    {/* Display Full GPT Response */}
-                    <div className="mt-6">
-                        <h3 className="font-semibold text-gray-800 mb-2">
-                            Full GPT Response
-                        </h3>
-                        <pre className="bg-gray-100 p-4 rounded-md overflow-x-auto text-sm">
-                            {gradingData.gptResponse}
-                        </pre>
+                    <div className="flex justify-center mt-6">
+                        <button
+                            onClick={() => saveAsDocx(editedData || gradingData)}
+                            className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition"
+                        >
+                            Download Full Response
+                        </button>
                     </div>
                 </div>
             )}

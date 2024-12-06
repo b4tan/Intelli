@@ -111,7 +111,7 @@ const hiw = () => {
 
             {/* Description Section */}
             <div
-                className="relative flex justify-center items-center border"
+                className="relative flex justify-center items-center rounded"
                 style={{
                     marginTop: '50px',
                     width: '65%', 
@@ -119,7 +119,7 @@ const hiw = () => {
                     background: 'radial-gradient(circle, #206c8c, #1d997c)',
                     marginLeft: 'auto',
                     marginRight: 'auto',
-                    borderRadius: '10px',
+                    borderRadius: '15px',
                     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
                     opacity: '0.8',
                     top: "-10px",
@@ -137,7 +137,7 @@ const hiw = () => {
                     Intelli. is able to parse student submissions and grading guidelines in any
                     forms. However, to achieve maximum accuracy, the submitted document needs to be
                     in docx. format. Don't have a docx. grading guideline? Our dedicated autograder
-                    section will handle that for you!
+                    section is able to handle the creation of a grading guideline and let's you review scores that you need revision. Just give it a go!
                 </p>
             </div>
         </div>

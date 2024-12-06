@@ -9,6 +9,7 @@ function Rubric() {
   const [generatedFile, setGeneratedFile] = useState(null); // Generated rubric file
   const [msg, setMsg] = useState(null);
   const [gradingData, setGradingData] = useState(null);
+  const [editedData, setEditedData] = useState(null);
   const [downloadGeneratedFile, setDownloadGeneratedFile] = useState(null);
 
   // Scroll to top on load
@@ -42,6 +43,14 @@ function Rubric() {
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
+
+      const handleEditChange = (index, field, value) => {
+        const updatedData = [...editedData.csvData];
+        updatedData[index][field] = field === 'grade' ? parseFloat(value) || 0 : value;
+        const updatedOverallGrade = updatedData.reduce((sum, item) => sum + (parseFloat(item.grade) || 0), 0);
+        setEditedData({ ...editedData, csvData: updatedData, overallGrade: updatedOverallGrade });
+    };
+
 
   // Generate rubric file (.docx)
   const generateDocxFile = async () => {
@@ -84,26 +93,51 @@ function Rubric() {
     // setMsg(generatedFile);
   };
 
-  const saveAsDocx = async (response) => {
+  // const saveAsDocx = async (response) => {
+  //   const doc = new Document({
+  //     sections: [
+  //       {
+  //         children: [
+  //           new Paragraph({
+  //             children: [
+  //               new TextRun(response),
+  //             ],
+  //           }),
+  //         ],
+  //       },
+  //     ],
+  //   });
+  //   const blob = await Packer.toBlob(doc);
+  //   const link = document.createElement('a');
+  //   link.href = URL.createObjectURL(blob);
+  //   link.download = 'GPT_Response.docx';
+  //   link.click();
+  // };
+
+  const saveAsDocx = async (data) => {
+    const tableData = data.csvData.map(row => {
+        return `Question: ${row.question}, Grade: ${row.grade}, Reason: ${row.reason}`;
+    }).join('\n\n');
+
     const doc = new Document({
-      sections: [
-        {
-          children: [
-            new Paragraph({
-              children: [
-                new TextRun(response),
-              ],
-            }),
-          ],
-        },
-      ],
+        sections: [
+            {
+                children: [
+                    new Paragraph({
+                        children: [
+                            new TextRun(tableData),
+                        ],
+                    }),
+                ],
+            },
+        ],
     });
     const blob = await Packer.toBlob(doc);
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = 'GPT_Response.docx';
     link.click();
-  };
+};
 
   const handleSubmit = async () => {
     generateDocxFile();
@@ -235,28 +269,61 @@ function Rubric() {
           </p>
         )}
       </div>
-      {/* Display Full GPT Response */}
-{gradingData?.gptResponse && (
-  <div className="mt-6 w-[60%]">
-    <h3 className="font-semibold text-[#FAF9F6] text-center mb-2">
-      Full GPT Response
-    </h3>
-    <pre className="bg-gray-100 p-4 rounded-md overflow-x-auto text-sm">
-      {gradingData.gptResponse}
-    </pre>
-  </div>
+
+
+      {editedData && (
+    <div className="bg-white shadow-md rounded-lg p-8 mt-10 w-full max-w-4xl">
+        <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
+            Overall Grade: {editedData.overallGrade}
+        </h2>
+        <table className="w-full text-left border-collapse border border-gray-300">
+            <thead>
+                <tr className="bg-gray-100">
+                    <th className="border border-gray-300 px-4 py-2">Question</th>
+                    <th className="border border-gray-300 px-4 py-2">Grade</th>
+                    <th className="border border-gray-300 px-4 py-2">Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                {editedData.csvData.map((row, index) => (
+                    <tr key={index} className="hover:bg-gray-50">
+                        <td className="border border-gray-300 px-4 py-2">{row.question}</td>
+                        <td className="border border-gray-300 px-4 py-2">
+                            <div className="flex items-center">
+                                <input
+                                    type="number"
+                                    value={row.grade}
+                                    onChange={(e) =>
+                                        handleEditChange(index, 'grade', e.target.value)
+                                    }
+                                    className="w-16 border border-gray-300 rounded-md p-1"
+                                />
+                            </div>
+                        </td>
+                        <td className="border border-gray-300 px-4 py-2">
+                            <textarea
+                                value={row.reason}
+                                onChange={(e) =>
+                                    handleEditChange(index, 'reason', e.target.value)
+                                }
+                                className="w-full border border-gray-300 rounded-md p-2"
+                            />
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+        <div className="flex justify-center mt-6">
+            <button
+                onClick={() => saveAsDocx(editedData || gradingData)}
+                className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition"
+            >
+                Download Full Response
+            </button>
+        </div>
+    </div>
 )}
 
-
-      {/* Download Full Response */}
-      {gradingData?.gptResponse && (
-        <button
-          onClick={() => saveAsDocx(gradingData.gptResponse)}
-          className="mt-4 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition"
-        >
-          Download Full Response
-        </button>
-      )}
       {/* Download Rubric */}
       {gradingData?.gptResponse && (
 
