@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Document, Packer, Paragraph, TextRun } from 'docx';
-import './rubric.css'; 
 
 function Rubric() {
   const [file, setFile] = useState(null); // Student submission file
@@ -21,10 +20,9 @@ function Rubric() {
   const addQuestion = () => {
     setQuestions([
       ...questions,
-      { type: 'mcq', question: '', rubric: '', sampleAnswer: '', points: '' },
+      { type: '', question: '', rubric: '', sampleAnswer: '', points: '' },
     ]);
   };
-  
 
   // Remove a question
   const removeQuestion = (index) => {
@@ -37,20 +35,19 @@ function Rubric() {
       i === index ? { ...q, [field]: value } : q
     );
     setQuestions(updatedQuestions);
-  };  
+  };
 
   // Handle student file upload
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
-      const handleEditChange = (index, field, value) => {
+  const handleEditChange = (index, field, value) => {
         const updatedData = [...editedData.csvData];
         updatedData[index][field] = field === 'grade' ? parseFloat(value) || 0 : value;
         const updatedOverallGrade = updatedData.reduce((sum, item) => sum + (parseFloat(item.grade) || 0), 0);
         setEditedData({ ...editedData, csvData: updatedData, overallGrade: updatedOverallGrade });
-    };
-
+  };
 
   // Generate rubric file (.docx)
   const generateDocxFile = async () => {
@@ -90,30 +87,7 @@ function Rubric() {
     setGeneratedFile(file); // Save generated file
     setDownloadGeneratedFile(fileURL);
     setMsg('Rubric file generated successfully! Now Grading.....');
-    // setMsg(generatedFile);
   };
-
-  // const saveAsDocx = async (response) => {
-  //   const doc = new Document({
-  //     sections: [
-  //       {
-  //         children: [
-  //           new Paragraph({
-  //             children: [
-  //               new TextRun(response),
-  //             ],
-  //           }),
-  //         ],
-  //       },
-  //     ],
-  //   });
-  //   const blob = await Packer.toBlob(doc);
-  //   const link = document.createElement('a');
-  //   link.href = URL.createObjectURL(blob);
-  //   link.download = 'GPT_Response.docx';
-  //   link.click();
-  // };
-
   const saveAsDocx = async (data) => {
     const tableData = data.csvData.map(row => {
         return `Question: ${row.question}, Grade: ${row.grade}, Reason: ${row.reason}`;
@@ -139,6 +113,7 @@ function Rubric() {
     link.click();
 };
 
+  // Submit rubric and student answer to backend
   const handleSubmit = async () => {
     generateDocxFile();
     if (!file || !generatedFile) {
@@ -158,7 +133,9 @@ function Rubric() {
       });
 
       setMsg('Grading complete!');
-      setGradingData(response.data);
+      const initialOverallGrade = response.data.csvData.reduce((sum, item) => sum + parseFloat(item.grade || 0), 0);
+      setGradingData({ ...response.data, overallGrade: initialOverallGrade });
+      setEditedData({ ...response.data, overallGrade: initialOverallGrade });
       console.log('Response from server:', response.data);
     } catch (error) {
       setMsg('Error during submission. Please try again.');
@@ -168,164 +145,185 @@ function Rubric() {
 
   return (
     <div className="min-h-screen flex flex-col items-center py-10 px-5">
-      <div className="fixed inset-0 w-full h-full bg-gradient-to-r from-transparent via-[#3070b0]/30 to-transparent z-0 pointer-events-none"></div>
+            <div className="fixed inset-0 w-full h-full bg-gradient-to-r from-transparent via-[#3070b0]/30 to-transparent z-0 pointer-events-none"></div>
+        <div className="rubric-container text-gray-800 min-h-screen flex flex-col items-center py-10 px-5 mt-20">
+      <h1 className="text-3xl font-bold mb-6 text-center text-white">
+        Create and Submit Rubric
+      </h1>
+          {/* Question Input Section */}
+          <div className="questions-container w-full max-w-3xl">
+            {questions.map((question, index) => (
+              <div key={index} className="question-row border-b pb-4 mb-4">
+                <label className="block font-semibold mb-2 text-white">Question Type:</label>
+                <select
+                  value={question.type}
+                  onChange={(e) =>
+                    handleQuestionChange(index, 'type', e.target.value)
+                  }
+                  className="w-full border rounded px-2 py-1 mb-4"
+                >
+                  <option value="">Select Question Type</option>
+                  <option value="mcq">Multiple Choice</option>
+                  <option value="truefalse">True/False</option>
+                  <option value="short">Short Answer</option>
+                </select>
 
-      <div className="mt-16 bg-[#FAF9F6] shadow-md rounded-lg p-8 max-w-2xl w-full">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-          Create and Submit Grading Guideline
-        </h1>
+                <label className="block font-semibold mb-2 text-white">Question:</label>
+                <input
+                  type="text"
+                  value={question.question}
+                  onChange={(e) =>
+                    handleQuestionChange(index, 'question', e.target.value)
+                  }
+                  className="w-full border rounded px-2 py-1 mb-4"
+                />
 
-        {/* Question Input Section */}
-        <div className="space-y-6">
-          {questions.map((question, index) => (
-            <div key={index} className="space-y-4">
-              <label className="block text-gray-700 font-semibold">Question Type:</label>
-              <select
-                value={question.type}
-                onChange={(e) => handleQuestionChange(index, 'type', e.target.value)}
-                className="block w-full border border-gray-300 rounded-md p-2"
-              >
-                <option value="mcq">Multiple Choice</option>
-                <option value="truefalse">True/False</option>
-                <option value="short">Short Answer</option>
-              </select>
+                <label className="block font-semibold mb-2 text-white">Rubric:</label>
+                <input
+                  type="text"
+                  value={question.rubric}
+                  onChange={(e) =>
+                    handleQuestionChange(index, 'rubric', e.target.value)
+                  }
+                  className="w-full border rounded px-2 py-1 mb-4"
+                />
 
-              <label className="block text-gray-700 font-semibold">Question:</label>
-              <input
-                type="text"
-                value={question.question}
-                onChange={(e) => handleQuestionChange(index, 'question', e.target.value)}
-                className="block w-full border border-gray-300 rounded-md p-2"
-              />
+                <label className="block font-semibold mb-2 text-white">Sample Answer:</label>
+                <input
+                  type="text"
+                  value={question.sampleAnswer}
+                  onChange={(e) =>
+                    handleQuestionChange(index, 'sampleAnswer', e.target.value)
+                  }
+                  className="w-full border rounded px-2 py-1 mb-4"
+                />
 
-              <label className="block text-gray-700 font-semibold">Rubric:</label>
-              <input
-                type="text"
-                value={question.rubric}
-                onChange={(e) => handleQuestionChange(index, 'rubric', e.target.value)}
-                className="block w-full border border-gray-300 rounded-md p-2"
-              />
+                <label className="block font-semibold mb-2 text-white"> Points:</label>
+                <input
+                  type="number"
+                  value={question.points}
+                  onChange={(e) =>
+                    handleQuestionChange(index, 'points', e.target.value)
+                  }
+                  className="w-full border rounded px-2 py-1 mb-4"
+                />
 
-              <label className="block text-gray-700 font-semibold">Sample Answer:</label>
-              <input
-                type="text"
-                value={question.sampleAnswer}
-                onChange={(e) => handleQuestionChange(index, 'sampleAnswer', e.target.value)}
-                className="block w-full border border-gray-300 rounded-md p-2"
-              />
+                <button
+                  onClick={() => removeQuestion(index)}
+                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                >
+                  Remove Question
+                </button>
+              </div>
+            ))}
+          </div>
 
-              <label className="block text-gray-700 font-semibold">Points:</label>
-              <input
-                type="number"
-                value={question.points}
-                onChange={(e) => handleQuestionChange(index, 'points', e.target.value)}
-                className="block w-full border border-gray-300 rounded-md p-2"
-              />
-
-              <button
-                onClick={() => removeQuestion(index)}
-                className="px-4 py-2 rounded-lg border bg-[#FF6057] text-[#FAF9F6] hover:bg-[#FF8986] hover:text-[#FAF9F6] font-medium"
-              >
-                Remove Question
-              </button>
-            </div>
-          ))}
-        </div>
-
-        {/* Add Question Button */}
-        <div className="mt-6 flex justify-center">
+          {/* Add Question Button */}
           <button
             onClick={addQuestion}
-            className="px-6 py-3 rounded-lg border bg-[#25897a] text-[#FAF9F6] hover:bg-[#6BB1A6] hover:text-[#FAF9F6] font-medium"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded mb-6"
           >
             Add Question
           </button>
-        </div>
 
-        {/* File Upload */}
-        <div className="mt-6">
-          <label className="block text-gray-700 font-semibold mb-2">Upload Student Submission:</label>
-          <input
-            type="file"
-            onChange={handleFileChange}
-            className="block w-full border border-gray-300 rounded-md p-2"
-          />
-        </div>
+          {/* Generate Rubric File */}
+          {/* <button
+            onClick={generateDocxFile}
+            className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded mb-6"
+          >
+            Generate Rubric File
+          </button> */}
 
-        {/* Submit Button */}
-        <div className="mt-8 flex justify-center">
+          {/* Upload Student Answer */}
+          <div className="upload-section w-full max-w-3xl">
+            <label className="block font-semibold mb-2 text-white">Upload Student Submission:</label>
+            <input
+              type="file"
+              onChange={handleFileChange}
+              className="w-full border rounded px-2 py-1"
+            />
+          </div>
+
+          {/* Submit Button */}
           <button
             onClick={handleSubmit}
-            className="px-[35%] py-3 rounded-lg border bg-[#25897a] text-[#FAF9F6] hover:bg-[#6BB1A6] hover:text-[#FAF9F6] font-medium"
+            className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded mt-6"
           >
             Submit for Grading
           </button>
-        </div>
 
-        {/* Status Message */}
-        {msg && (
-          <p className="mt-4 text-center text-gray-700 font-medium">
-            {msg}
-          </p>
-        )}
-      </div>
+          {/* Status Message */}
+          {msg && <p className="mt-4 text-center text-gray-700 text-white">{msg}</p>}
+          
+          {editedData && (
+                    <div className="bg-white shadow-md rounded-lg p-8 mt-10 w-full max-w-4xl">
+                        <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
+                            Overall Grade: {editedData.overallGrade}
+                        </h2>
+                        <table className="w-full text-left border-collapse border border-gray-300">
+                            <thead>
+                                <tr className="bg-gray-100">
+                                    <th className="border border-gray-300 px-4 py-2">Question</th>
+                                    <th className="border border-gray-300 px-4 py-2">Grade</th>
+                                    <th className="border border-gray-300 px-4 py-2">Reason</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {editedData.csvData.map((row, index) => {
+                                    // Ensure the grade is always treated as a string
+                                    const grade = typeof row.grade === "string" ? row.grade : `${row.grade}/5`; // Default to 5 as denominator
+                                    const [numerator, denominator] = grade.split("/");
 
-
-      {editedData && (
-    <div className="bg-white shadow-md rounded-lg p-8 mt-10 w-full max-w-4xl">
-        <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
-            Overall Grade: {editedData.overallGrade}
-        </h2>
-        <table className="w-full text-left border-collapse border border-gray-300">
-            <thead>
-                <tr className="bg-gray-100">
-                    <th className="border border-gray-300 px-4 py-2">Question</th>
-                    <th className="border border-gray-300 px-4 py-2">Grade</th>
-                    <th className="border border-gray-300 px-4 py-2">Reason</th>
-                </tr>
-            </thead>
-            <tbody>
-                {editedData.csvData.map((row, index) => (
-                    <tr key={index} className="hover:bg-gray-50">
-                        <td className="border border-gray-300 px-4 py-2">{row.question}</td>
-                        <td className="border border-gray-300 px-4 py-2">
-                            <div className="flex items-center">
-                                <input
-                                    type="number"
-                                    value={row.grade}
-                                    onChange={(e) =>
-                                        handleEditChange(index, 'grade', e.target.value)
-                                    }
-                                    className="w-16 border border-gray-300 rounded-md p-1"
-                                />
-                            </div>
-                        </td>
-                        <td className="border border-gray-300 px-4 py-2">
-                            <textarea
-                                value={row.reason}
-                                onChange={(e) =>
-                                    handleEditChange(index, 'reason', e.target.value)
-                                }
-                                className="w-full border border-gray-300 rounded-md p-2"
-                            />
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-        <div className="flex justify-center mt-6">
-            <button
-                onClick={() => saveAsDocx(editedData || gradingData)}
-                className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition"
-            >
-                Download Full Response
-            </button>
-        </div>
-    </div>
-)}
-
-      {/* Download Rubric */}
-      {gradingData?.gptResponse && (
+                                    return (
+                                        <tr key={index} className="hover:bg-gray-50">
+                                            <td className="border border-gray-300 px-4 py-2">
+                                                {row.question}
+                                            </td>
+                                            <td className="border border-gray-300 px-4 py-2">
+                                                <div className="flex items-center">
+                                                    <input
+                                                        type="number"
+                                                        value={numerator} // Editable numerator
+                                                        onChange={(e) =>
+                                                            handleEditChange(
+                                                                index,
+                                                                "grade",
+                                                                `${e.target.value}/${denominator}`
+                                                            )
+                                                        }
+                                                        className="w-16 border border-gray-300 rounded-md p-1 mr-1"
+                                                    />
+                                                    <span>/ {denominator}</span> {/* Static denominator */}
+                                                </div>
+                                            </td>
+                                            <td className="border border-gray-300 px-4 py-2">
+                                                <textarea
+                                                    value={row.reason}
+                                                    onChange={(e) =>
+                                                        handleEditChange(index, "reason", e.target.value)
+                                                    }
+                                                    className="w-full border border-gray-300 rounded-md p-2"
+                                                    rows={Math.max(2, Math.ceil(row.reason.length / 60))} // Dynamic row size
+                                                    style={{ resize: "none" }} // Prevent manual resizing
+                                                />
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                        <div className="flex justify-center mt-6">
+                            <button
+                                onClick={() => saveAsDocx(editedData || gradingData)}
+                                className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition"
+                            >
+                                Download Full Response
+                            </button>
+                        </div>
+                    </div>
+                )}
+                {/* Download Rubric */}
+          {gradingData?.gptResponse && (
 
     <a
       href={downloadGeneratedFile}
@@ -335,10 +333,13 @@ function Rubric() {
       Download Rubric
     </a>
 
-)}
+    )}
+            </div>
 
-    </div>
-
+            </div>
+    
+    
+    
   );
 }
 
