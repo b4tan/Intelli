@@ -130,10 +130,11 @@ function Rubric() {
       });
 
       if (response.data && response.data.csvData) {
-        const csvDataWithGrades = response.data.csvData.map((item) => ({
+        const csvDataWithGrades = response.data.csvData.map((item, index) => ({
           question: item.question || '',
           grade: item.grade || 0,
           reason: item.reason || '',
+          points: questions[index]?.points || '0', // Assign respective points
         }));
 
         const initialOverallGrade = csvDataWithGrades.reduce(
@@ -155,107 +156,107 @@ function Rubric() {
 
   return (
     <div className="min-h-screen flex flex-col items-center py-10 px-5">
-    <div className="fixed inset-0 w-full h-full bg-gradient-to-r from-transparent via-[#3070b0]/30 to-transparent z-0 pointer-events-none"></div>
+      <div className="fixed inset-0 w-full h-full bg-gradient-to-r from-transparent via-[#3070b0]/30 to-transparent z-0 pointer-events-none"></div>
 
-    <div className="mt-16 bg-[#FAF9F6] shadow-md rounded-lg p-8 max-w-2xl w-full">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-        Create and Submit Grading Guideline
-      </h1>
+      <div className="mt-16 bg-[#FAF9F6] shadow-md rounded-lg p-8 max-w-2xl w-full">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+          Create and Submit Grading Guideline
+        </h1>
 
-      {/* Question Input Section */}
-      <div className="space-y-6">
-        {questions.map((question, index) => (
-          <div key={index} className="space-y-4">
-            <label className="block text-gray-700 font-semibold">Question Type:</label>
-            <select
-              value={question.type}
-              onChange={(e) => handleQuestionChange(index, 'type', e.target.value)}
-              className="block w-full border border-gray-300 rounded-md p-2"
-            >
-              <option value="mcq">Multiple Choice</option>
-              <option value="truefalse">True/False</option>
-              <option value="short">Short Answer</option>
-            </select>
+        {/* Question Input Section */}
+        <div className="space-y-6">
+          {questions.map((question, index) => (
+            <div key={index} className="space-y-4">
+              <label className="block text-gray-700 font-semibold">Question Type:</label>
+              <select
+                value={question.type}
+                onChange={(e) => handleQuestionChange(index, 'type', e.target.value)}
+                className="block w-full border border-gray-300 rounded-md p-2"
+              >
+                <option value="mcq">Multiple Choice</option>
+                <option value="truefalse">True/False</option>
+                <option value="short">Short Answer</option>
+              </select>
 
-            <label className="block text-gray-700 font-semibold">Question:</label>
-            <input
-              type="text"
-              value={question.question}
-              onChange={(e) => handleQuestionChange(index, 'question', e.target.value)}
-              className="block w-full border border-gray-300 rounded-md p-2"
-            />
+              <label className="block text-gray-700 font-semibold">Question:</label>
+              <input
+                type="text"
+                value={question.question}
+                onChange={(e) => handleQuestionChange(index, 'question', e.target.value)}
+                className="block w-full border border-gray-300 rounded-md p-2"
+              />
 
-            <label className="block text-gray-700 font-semibold">Rubric:</label>
-            <input
-              type="text"
-              value={question.rubric}
-              onChange={(e) => handleQuestionChange(index, 'rubric', e.target.value)}
-              className="block w-full border border-gray-300 rounded-md p-2"
-            />
+              <label className="block text-gray-700 font-semibold">Rubric:</label>
+              <input
+                type="text"
+                value={question.rubric}
+                onChange={(e) => handleQuestionChange(index, 'rubric', e.target.value)}
+                className="block w-full border border-gray-300 rounded-md p-2"
+              />
 
-            <label className="block text-gray-700 font-semibold">Sample Answer:</label>
-            <input
-              type="text"
-              value={question.sampleAnswer}
-              onChange={(e) => handleQuestionChange(index, 'sampleAnswer', e.target.value)}
-              className="block w-full border border-gray-300 rounded-md p-2"
-            />
+              <label className="block text-gray-700 font-semibold">Sample Answer:</label>
+              <input
+                type="text"
+                value={question.sampleAnswer}
+                onChange={(e) => handleQuestionChange(index, 'sampleAnswer', e.target.value)}
+                className="block w-full border border-gray-300 rounded-md p-2"
+              />
 
-            <label className="block text-gray-700 font-semibold">Points:</label>
-            <input
-              type="number"
-              value={question.points}
-              onChange={(e) => handleQuestionChange(index, 'points', e.target.value)}
-              className="block w-full border border-gray-300 rounded-md p-2"
-            />
+              <label className="block text-gray-700 font-semibold">Points:</label>
+              <input
+                type="number"
+                value={question.points}
+                onChange={(e) => handleQuestionChange(index, 'points', e.target.value)}
+                className="block w-full border border-gray-300 rounded-md p-2"
+              />
 
-            <button
-              onClick={() => removeQuestion(index)}
-              className="px-4 py-2 rounded-lg border bg-[#FF6057] text-[#FAF9F6] hover:bg-[#FF8986] hover:text-[#FAF9F6] font-medium"
-            >
-              Remove Question
-            </button>
-          </div>
-        ))}
-      </div>
+              <button
+                onClick={() => removeQuestion(index)}
+                className="px-4 py-2 rounded-lg border bg-[#FF6057] text-[#FAF9F6] hover:bg-[#FF8986] hover:text-[#FAF9F6] font-medium"
+              >
+                Remove Question
+              </button>
+            </div>
+          ))}
+        </div>
 
-      {/* Add Question Button */}
-      <div className="mt-6 flex justify-center">
-        <button
-          onClick={addQuestion}
-          className="px-6 py-3 rounded-lg border bg-[#25897a] text-[#FAF9F6] hover:bg-[#6BB1A6] hover:text-[#FAF9F6] font-medium"
-        >
-          Add Question
-        </button>
-      </div>
+        {/* Add Question Button */}
+        <div className="mt-6 flex justify-center">
+          <button
+            onClick={addQuestion}
+            className="px-6 py-3 rounded-lg border bg-[#25897a] text-[#FAF9F6] hover:bg-[#6BB1A6] hover:text-[#FAF9F6] font-medium"
+          >
+            Add Question
+          </button>
+        </div>
 
-      {/* File Upload */}
-      <div className="mt-6">
-        <label className="block text-gray-700 font-semibold mb-2">Upload Student Submission:</label>
-        <input
-          type="file"
-          onChange={handleFileChange}
-          className="block w-full border border-gray-300 rounded-md p-2"
-        />
-      </div>
+        {/* File Upload */}
+        <div className="mt-6">
+          <label className="block text-gray-700 font-semibold mb-2">Upload Student Submission:</label>
+          <input
+            type="file"
+            onChange={handleFileChange}
+            className="block w-full border border-gray-300 rounded-md p-2"
+          />
+        </div>
 
-      {/* Submit Button */}
-      <div className="mt-8 flex justify-center">
-        <button
-          onClick={handleSubmit}
-          className="px-[35%] py-3 rounded-lg border bg-[#25897a] text-[#FAF9F6] hover:bg-[#6BB1A6] hover:text-[#FAF9F6] font-medium"
-        >
-          Submit for Grading
-        </button>
-      </div>
+        {/* Submit Button */}
+        <div className="mt-8 flex justify-center">
+          <button
+            onClick={handleSubmit}
+            className="px-[35%] py-3 rounded-lg border bg-[#25897a] text-[#FAF9F6] hover:bg-[#6BB1A6] hover:text-[#FAF9F6] font-medium"
+          >
+            Submit for Grading
+          </button>
+        </div>
 
-      {/* Status Message */}
-      {msg && (
-        <p className="mt-4 text-center text-gray-700 font-medium">
-          {msg}
-        </p>
-      )}
-      </div>
+        {/* Status Message */}
+        {msg && (
+          <p className="mt-4 text-center text-gray-700 font-medium">
+            {msg}
+          </p>
+        )}
+        </div>
 
 {editedData && (
           <div className="bg-white shadow-md rounded-lg p-8 mt-10 w-full max-w-4xl">
@@ -272,7 +273,7 @@ function Rubric() {
               </thead>
               <tbody>
                             {editedData.csvData.map((row, index) => {
-                                const grade = typeof row.grade === "string" ? row.grade : `${row.grade}/5`; 
+                                const grade = typeof row.grade === "string" ? row.grade : `${row.grade}/${questions[index]?.points || '0'}`; 
                                 const [numerator, denominator] = grade.split("/");
 
                                 return (
@@ -294,7 +295,7 @@ function Rubric() {
                                                     }
                                                     className="w-16 border border-gray-300 rounded-md p-1 mr-1"
                                                 />
-                                                <span>/ {denominator}</span> {/* Static denominator */}
+                                                <span>/ {denominator}</span> {/* Dynamic denominator */}
                                             </div>
                                         </td>
                                         <td className="border border-gray-300 px-8 py-2">
@@ -333,6 +334,5 @@ function Rubric() {
       </div>
   );
 }
-
 
 export default Rubric;
