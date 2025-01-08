@@ -33,7 +33,7 @@ const LoginModal = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative">
+      <div className="bg-[#FAF9F6] p-6 rounded-lg shadow-lg w-96 relative">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-600 hover:text-gray-800"
@@ -57,7 +57,7 @@ const LoginModal = ({ isOpen, onClose }) => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border rounded-md mb-3"
+            className="bg-[#FAF9F6] w-full p-2 border rounded-md mb-3"
             required
           />
           <input
@@ -65,7 +65,7 @@ const LoginModal = ({ isOpen, onClose }) => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 border rounded-md mb-3"
+            className="bg-[#FAF9F6] w-full p-2 border rounded-md mb-3"
             required
           />
           <button

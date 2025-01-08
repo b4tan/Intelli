@@ -1,6 +1,6 @@
 import React from 'react';
 
-const subscribe = () => {
+const Subscribe = () => {
     return (
         <div
             className="text-[#FAF9F6]/80 relative"
@@ -8,20 +8,21 @@ const subscribe = () => {
                 fontFamily: 'Geneva',
             }}
         >
+            {/* Title Section */}
             <div
                 className="relative mb-8"
                 style={{
                     marginTop: '50px',
                 }}
             >
-                <div className="absolute top-0 right-0 h-20 bg-gradient-to-l from-[#206c8c] to-[#1d997c] shadow-lg w-[50%]" 
+                <div className="absolute top-0 right-0 h-20 bg-gradient-to-l from-[#206c8c] to-[#1d997c] shadow-lg w-[50%] sm:w-[95%] md:w-[75%] lg:w-[65%] flex justify-center items-center" 
                     style={{
                         clipPath: "polygon(100% 0, 0 0, 20% 50%, 0 100%, 100% 100%)"
                     }}>
                 </div>
 
                 <h1
-                    className="relative text-5xl font-semibold z-10 pl-4"
+                    className="relative text-3xl font-semibold z-10 pl-4 sm:text-2xl md:text-3xl lg:text-5xl"
                     style={{
                         lineHeight: '5rem',
                         marginRight: '15px'
@@ -32,16 +33,14 @@ const subscribe = () => {
             </div>
 
             <div className="relative">
-                <p className="mr-6 text-md opacity-80 text-right font-lighter" style = {{
-                    marginRight: "10px"
-                }}>
-
-                Our live-demo product is available now! Stay updated with our latest features and announcements. 
-                <br></br>Contact us for more details and be the first to know about future releases.  </p>
+                <p className="mr-6 text-md opacity-80 text-right font-lighter sm:text-sm md:text-md lg:text-lg" 
+                   style={{ marginRight: "10px" }}>
+                    Our live-demo product is available now! <br></br> Stay updated with our latest features and announcements. 
+                    <br></br>Contact us or sign up for more details.
+                </p>
             </div>
-
         </div>
-    )
+    );
 }
 
-export default subscribe;
+export default Subscribe;
