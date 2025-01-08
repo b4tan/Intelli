@@ -37,7 +37,7 @@ function HomePage() {
             <Subscribe />
         </div>
 
-        <div className="absolute top-[12rem] w-[1px] bg-[#FAF9F6]/60 h-32 sm:h-40 md:h-36 lg:h-48 z-20">
+        <div className="absolute top-[12rem] w-[1px] bg-[#FAF9F6]/60 h-32 sm:h-44 md:h-38 lg:h-52 z-20">
         </div>
 
         <div id="contact" className="w-[45%] text-left">

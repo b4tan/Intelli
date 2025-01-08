@@ -9,7 +9,7 @@ const Home = () => {
           <p className="text-[#FAF9F6] font-extrabold text-2xl sm:text-xl xs:text-sm opacity-70">
             A click away from grading
           </p>
-          <img src="./public/click.svg" alt="Grading Icon" className="w-12 h-12 sm:w-10 sm:h-10 opacity-70" />
+          <img src="./click.svg" alt="Grading Icon" className="w-12 h-12 sm:w-10 sm:h-10 opacity-70" />
         </div>
         <p className="text-[#FAF9F6] text-sm sm:text-xs opacity-70 font-light break-words">
           Simply upload an existing grading guideline or create one and a student submission to start grading.
@@ -36,7 +36,7 @@ const Home = () => {
           <p className="text-[#FAF9F6] font-extrabold text-2xl sm:text-xl xs:text-sm opacity-70">
             Automation that saves time
           </p>
-          <img src="./public/clock.svg" alt="Clock Icon" className="w-12 h-12 sm:w-10 sm:h-10 opacity-70" />
+          <img src="./clock.svg" alt="Clock Icon" className="w-12 h-12 sm:w-10 sm:h-10 opacity-70" />
         </div>
         <p className="text-[#FAF9F6] text-sm sm:text-xs opacity-70 font-light break-words">
           Intelli. is powered by a powerful model and grades papers in minutes. Sit back and relax!
