@@ -34,7 +34,9 @@ const Contact = () => {
             <div className="relative">
                 <p className="mr-6 text-md opacity-80 text-left font-lighter sm:text-sm md:text-md lg:text-lg" 
                    style={{ marginLeft: '10px' }}>
-                    Team: Bryant Tan, Christopherian Sulaiman, <br></br>Christophian Sulaiman
+                    Frontend: Bryant Tan <br></br>
+                    Backend:
+                    Christopherian Sulaiman, <br></br>Christophian Sulaiman
                     <br></br>
                     Reach us through:<br></br>
                     bryant.tan2103@gmail.com <br></br>
