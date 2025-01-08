@@ -19,8 +19,8 @@ const Hiw = () => {
 
             <div className="relative flex flex-col md:flex-row justify-center items-center gap-6 sm:gap-8 md:gap-12 lg:gap-16 mt-6 md:mt-10">
                 <div className="bg-white p-4 sm:p-5 md:p-6 opacity-80 rounded-2xl shadow-lg w-56 sm:w-64 md:w-72 lg:w-80 transform hover:scale-105 transition duration-300 relative text-center">
-                    <img src="/grading.png" alt="Rubric Sample" className="w-full h-auto rounded-lg" />
-                    <img src="/docx.png" alt="DOCX Icon" className="absolute top-[-8px] sm:top-[-10px] md:top-[-15px] right-[-8px] sm:right-[-10px] md:right-[-15px] w-6 sm:w-8 md:w-10 h-6 sm:h-8 md:h-10" />
+                    <img src="%PUBLIC_URL%/grading.png" alt="Rubric Sample" className="w-full h-auto rounded-lg" />
+                    <img src="%PUBLIC_URL%/docx.png" alt="DOCX Icon" className="absolute top-[-8px] sm:top-[-10px] md:top-[-15px] right-[-8px] sm:right-[-10px] md:right-[-15px] w-6 sm:w-8 md:w-10 h-6 sm:h-8 md:h-10" />
                     <h3 className="text-md sm:text-lg font-semibold text-gray-700 mt-3 md:mt-4">Grading Guideline</h3>
                     <p className="text-xs sm:text-sm text-gray-600">Includes rubrics, points rewarded, and question type.</p>
                 </div>
@@ -30,8 +30,8 @@ const Hiw = () => {
                 </div>
 
                 <div className="bg-white p-4 sm:p-5 md:p-6 opacity-80 rounded-2xl shadow-lg w-56 sm:w-64 md:w-72 lg:w-80 transform hover:scale-105 transition duration-300 relative text-center">
-                    <img src="/student.png" alt="Student Submission" className="w-full h-auto rounded-lg" />
-                    <img src="/docx.png" alt="DOCX Icon" className="absolute top-[-8px] sm:top-[-10px] md:top-[-15px] right-[-8px] sm:right-[-10px] md:right-[-15px] w-6 sm:w-8 md:w-10 h-6 sm:h-8 md:h-10" />
+                    <img src="%PUBLIC_URL%/student.png" alt="Student Submission" className="w-full h-auto rounded-lg" />
+                    <img src="%PUBLIC_URL%/docx.png" alt="DOCX Icon" className="absolute top-[-8px] sm:top-[-10px] md:top-[-15px] right-[-8px] sm:right-[-10px] md:right-[-15px] w-6 sm:w-8 md:w-10 h-6 sm:h-8 md:h-10" />
                     <h3 className="text-md sm:text-lg font-semibold text-gray-700 mt-3 md:mt-4">Student Submission</h3>
                     <p className="text-xs sm:text-sm text-gray-600">Automatically analyzed with AI for accuracy.</p>
                 </div>
